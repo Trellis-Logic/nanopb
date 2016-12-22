@@ -40,6 +40,11 @@ struct pb_istream_s
     void *state; /* Free field for use by callback implementation */
     size_t bytes_left;
     
+    /* Informative callback for field decoding */
+    void (* decoding_callback)(pb_istream_t *stream, uint32_t tag, pb_wire_type_t wire_type, void *iter);
+    /* Free field for use by decoding callback implementation */
+    void *decoding_callback_state;
+
 #ifndef PB_NO_ERRMSG
     const char *errmsg;
 #endif
