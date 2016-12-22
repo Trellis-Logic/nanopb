@@ -158,6 +158,7 @@ pb_istream_t pb_istream_from_buffer(const pb_byte_t *buf, size_t bufsize)
     state.c_state = buf;
     stream.state = state.state;
     stream.bytes_left = bufsize;
+    stream.decoding_callback = NULL;
 #ifndef PB_NO_ERRMSG
     stream.errmsg = NULL;
 #endif
@@ -898,7 +899,12 @@ bool checkreturn pb_decode_noinit(pb_istream_t *stream, const pb_field_t fields[
             uint32_t tmp = ((uint32_t)1 << (iter.required_field_index & 31));
             fields_seen[iter.required_field_index >> 5] |= tmp;
         }
-            
+
+        if(stream->decoding_callback)
+        {
+            stream->decoding_callback(stream, tag, wire_type, &iter);
+        }
+
         if (!decode_field(stream, wire_type, &iter))
             return false;
     }
