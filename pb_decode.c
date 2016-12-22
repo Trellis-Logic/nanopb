@@ -159,6 +159,7 @@ pb_istream_t pb_istream_from_buffer(const pb_byte_t *buf, size_t bufsize)
     stream.state = state.state;
     stream.bytes_left = bufsize;
     stream.decoding_callback = NULL;
+    stream.decoding_callback_state = NULL;
 #ifndef PB_NO_ERRMSG
     stream.errmsg = NULL;
 #endif
